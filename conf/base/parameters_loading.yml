@@ -1,0 +1,7 @@
+# This is a boilerplate parameters config generated for pipeline 'loading'
+# using Kedro 1.2.0.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/1.2.0/configuration/parameters.html
+gcp_project_id: "mlopsv2-489913"
+gcs_primary_folder: "bucket_tp_mlops_2/primary.csv"
