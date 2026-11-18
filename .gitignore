@@ -23,6 +23,8 @@ data/**
 
 # ignore file based logs
 *.log
+.ruff_cache/
+uv.lock
 
 ##########################
 # Common files

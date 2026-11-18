@@ -3,6 +3,7 @@ import numpy as np
 import pytest
 from purchase_predict.pipelines.processing.nodes import encode_features, split_dataset
 
+
 @pytest.fixture
 def sample_dataset():
     data = {
@@ -12,9 +13,10 @@ def sample_dataset():
         "sub_category": ["phone", "shirt", "lamp", "tv", None, "desk"],
         "brand": ["samsung", "nike", "philips", None, "adidas", "ikea"],
         "weekday": [1, 2, 3, 4, 5, 6],
-        "purchased": [1, 0, 1, 0, 1, 0]
+        "purchased": [1, 0, 1, 0, 1, 0],
     }
     return pd.DataFrame(data)
+
 
 def test_encode_features(sample_dataset):
     result = encode_features(sample_dataset)
@@ -28,6 +30,7 @@ def test_encode_features(sample_dataset):
     assert not features["category"].isnull().any()
     assert np.issubdtype(features["category"].dtype, np.integer)
 
+
 def test_split_dataset(sample_dataset):
     result = split_dataset(sample_dataset, test_ratio=0.5)
     X_train = result["X_train"]
@@ -40,4 +43,3 @@ def test_split_dataset(sample_dataset):
     assert len(y_train) == 3
     assert len(y_test) == 3
     assert set(X_train.index).isdisjoint(set(X_test.index))
-

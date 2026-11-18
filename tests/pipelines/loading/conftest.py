@@ -11,6 +11,7 @@ def project_id():
 def primary_folder():
     return "bucket_tp_mlops_2/data-test.csv"
 
+
 @pytest.fixture(scope="module")
 def catalog_test(project_id, primary_folder):
     catalog = DataCatalog(

@@ -229,6 +229,7 @@ def encode_features(dataset):
     # LabelEncoder sur brand, category, sub_category
     ...
 
+
 def split_dataset(dataset, test_ratio):
     # train_test_split 70/30
     ...
@@ -246,6 +247,7 @@ def auto_ml(X_train, y_train, X_test, y_test, max_evals, log_to_mlflow, experime
 def push_to_model_registry(registry_name, model_uri):
     # Crée la version dans MLflow Registry
     ...
+
 
 def stage_model(registry_name, version):
     # Assigne l'alias "staging" ou "production"
@@ -335,6 +337,7 @@ def test_encode_features(dataset_not_encoded):
     # Toutes les colonnes doivent être numériques après encodage
     for col in df.columns:
         assert pd.api.types.is_numeric_dtype(df.dtypes[col])
+
 
 def test_split_dataset(dataset_encoded, test_ratio):
     result = split_dataset(dataset_encoded, test_ratio)
@@ -493,6 +496,7 @@ Intégration du tracking MLflow dans le pipeline Kedro et gestion du **Model Reg
 **`training/__init__.py`** : chargement automatique des variables d'environnement
 ```python
 from dotenv import load_dotenv
+
 load_dotenv()
 ```
 
@@ -505,8 +509,7 @@ mlflow_model_registry: "purchase_predict"
 
 **`training/nodes.py`** : signature étendue de `auto_ml`
 ```python
-def auto_ml(X_train, y_train, X_test, y_test, max_evals,
-            log_to_mlflow: bool = False, experiment_id: int = -1):
+def auto_ml(X_train, y_train, X_test, y_test, max_evals, log_to_mlflow: bool = False, experiment_id: int = -1):
     if log_to_mlflow:
         mlflow.set_tracking_uri(os.getenv("MLFLOW_SERVER"))
         run = mlflow.start_run(experiment_id=exp_id)
@@ -593,7 +596,8 @@ class Model:
     def load_model(self):
         client = MlflowClient()
         model_version = client.get_model_version_by_alias(
-            MLFLOW_REGISTRY_NAME, ENV  # ENV = "staging" ou "production"
+            MLFLOW_REGISTRY_NAME,
+            ENV,  # ENV = "staging" ou "production"
         )
         # Récupère le transform_pipeline.pkl (encodeurs LabelEncoder)
         pipeline_path = mlflow.artifacts.download_artifacts(
@@ -612,8 +616,7 @@ class Model:
 
 ### Test réalisé
 ```python
-result = requests.post("http://127.0.0.1:5000/predict",
-                       json=dataset.sample(n=5).to_json()).json()
+result = requests.post("http://127.0.0.1:5000/predict", json=dataset.sample(n=5).to_json()).json()
 # → [1, 0, 1, 1, 1]
 ```
 
